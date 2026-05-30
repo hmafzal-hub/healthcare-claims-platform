@@ -1,0 +1,178 @@
+# version: 2
+
+# models:
+
+#   - name: stg_fact_claims
+
+#     columns:
+
+#       - name: claim_id
+#         tests:
+#           - not_null
+#           - unique
+
+#       - name: claim_status
+#         tests:
+#           - accepted_values:
+#               # arguments:
+#                 values:
+#                   - active
+#                   - cancelled
+#                   - completed
+
+#       - name: claim_amount
+
+#         tests:
+
+#           - dbt_expectations.expect_column_values_to_be_between:
+
+#               # arguments:
+
+#                 min_value: 0
+
+#                 max_value: 100000
+#   - name: stg_dim_patient
+
+#     columns:
+
+#       - name: patient_sk
+#         tests:
+#           - not_null
+#           - unique
+
+#       - name: patient_id
+#         tests:
+#           - not_null
+
+#       - name: gender
+#         tests:
+#           - accepted_values:
+#               # arguments:
+#                 values:
+#                   - male
+#                   - female
+
+
+#   - name: stg_fact_encounters
+
+#     columns:
+
+#       - name: patient_sk
+#         tests:
+
+#           - relationships:
+
+#               # arguments:
+
+#                 to: ref('stg_dim_patient')
+
+#                 field: patient_sk
+
+version: 2
+
+models:
+  - name: stg_dim_patient
+    description: "Staging model for patient demographic information from RAW.DIM_PATIENT."
+    columns:
+      - name: patient_id
+        description: "Unique identifier for each patient."
+        tests:
+          - not_null
+          - unique
+      - name: gender
+        description: "Patient gender."
+      - name: birth_date
+        description: "Patient date of birth."
+      - name: city
+        description: "Patient city."
+      - name: state
+        description: "Patient state."
+
+  - name: stg_dim_provider
+    description: "Staging model for healthcare provider information from RAW.DIM_PROVIDERS."
+    columns:
+      - name: provider_id
+        description: "Unique identifier for each healthcare provider."
+        tests:
+          - not_null
+          - unique
+      - name: provider_name
+        description: "Name of the healthcare provider."
+      - name: provider_type
+        description: "Type or specialty of the provider."
+      - name: city
+        description: "Provider city."
+      - name: state
+        description: "Provider state."
+
+  - name: stg_dim_date
+    description: "Staging model for calendar/date dimension from RAW.DIM_DATE."
+    columns:
+      - name: date_id
+        description: "Unique date key used for joining facts to the date dimension."
+        tests:
+          - not_null
+          - unique
+      - name: full_date
+        description: "Actual calendar date."
+      - name: year
+        description: "Calendar year."
+      - name: month
+        description: "Calendar month."
+      - name: day
+        description: "Calendar day."
+
+  - name: stg_fact_claims
+    description: "Staging model for healthcare claims from RAW.FACT_CLAIMS."
+    columns:
+      - name: claim_id
+        description: "Unique identifier for each healthcare claim."
+        tests:
+          - not_null
+          - unique
+      - name: patient_id
+        description: "Patient associated with the claim."
+        tests:
+          - not_null
+      - name: provider_id
+        description: "Healthcare provider associated with the claim."
+      - name: claim_amount
+        description: "Total billed amount for the claim."
+      - name: claim_status
+        description: "Current claim status such as approved, denied, or pending."
+
+  - name: stg_fact_encounters
+    description: "Staging model for patient encounters from RAW.FACT_ENCOUNTERS."
+    columns:
+      - name: encounter_id
+        description: "Unique identifier for each patient encounter."
+        tests:
+          - not_null
+          - unique
+      - name: patient_id
+        description: "Patient associated with the encounter."
+      - name: provider_id
+        description: "Provider involved in the encounter."
+      - name: encounter_date
+        description: "Date when the encounter occurred."
+      - name: encounter_type
+        description: "Type of healthcare encounter."
+
+  - name: stg_fact_observations
+    description: "Staging model for clinical observations from RAW.FACT_OBSERVATIONS."
+    columns:
+      - name: observation_id
+        description: "Unique identifier for each clinical observation."
+        tests:
+          - not_null
+          - unique
+      - name: patient_id
+        description: "Patient associated with the observation."
+      - name: encounter_id
+        description: "Encounter related to the observation."
+      - name: observation_code
+        description: "Clinical observation code."
+      - name: observation_value
+        description: "Measured value of the observation."
+      - name: observation_date
+        description: "Date when the observation was recorded."

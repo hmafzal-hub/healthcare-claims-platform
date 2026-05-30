@@ -1,0 +1,26 @@
+version: 2
+
+sources:
+  - name: raw
+    database: HEALTHCARE_DEV
+    schema: RAW
+
+    tables:
+      - name: DIM_PATIENT
+      - name: DIM_PROVIDERS
+      - name: DIM_ENCOUNTERS
+      - name: DIM_DATE
+
+      - name: FACT_CLAIMS
+        config:
+          loaded_at_field: UPDATED_AT
+          freshness:
+            warn_after:
+              count: 7
+              period: day
+            error_after:
+              count: 14
+              period: day
+
+      - name: FACT_ENCOUNTERS
+      - name: FACT_OBSERVATIONS
