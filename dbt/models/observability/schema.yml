@@ -1,0 +1,127 @@
+# version: 2
+
+# models:
+#   - name: claim_count_reconciliation
+#     description: "Reconciles total claim count between RAW.FACT_CLAIMS and STRUCTURED.INT_CLAIM_SUMMARY."
+
+#     columns:
+#       - name: raw_claim_count
+#         description: "Total number of claim records in RAW.FACT_CLAIMS."
+
+#       - name: summary_claim_count
+#         description: "Total claims calculated from INT_CLAIM_SUMMARY."
+
+#       - name: difference
+#         description: "Difference between raw claim count and summary claim count."
+
+#       - name: check_status
+#         description: "PASS when raw and summary claim counts match."
+#         tests:
+#           - not_null
+#           - accepted_values:
+#               arguments:
+#                 values: ['PASS']
+
+#   - name: claim_amount_reconciliation
+#     description: "Validates claim amount and row count between RAW and STAGING."
+
+#     columns:
+
+#       - name: check_status
+#         tests:
+#           - not_null
+
+#           - accepted_values:
+#               arguments:
+#                 values: ['PASS']
+
+#   - name: patient_reconciliation
+#     description: "Validates patient count between RAW and STAGING."
+#     columns:
+#       - name: check_status
+#         tests:
+#           - not_null
+#           - accepted_values:
+#               arguments:
+#                 values: ['PASS']
+
+#   - name: provider_reconciliation
+#     description: "Validates provider count between RAW and STAGING."
+#     columns:
+#       - name: check_status
+#         tests:
+#           - not_null
+#           - accepted_values:
+#               arguments:
+#                 values: ['PASS']
+
+#   - name: claims_freshness_monitoring
+#     description: "Checks if claims data is fresh based on latest UPDATED_AT."
+#     columns:
+#       - name: check_status
+#         tests:
+#           - not_null
+#           - accepted_values:
+#               arguments:
+#                 values: ['PASS']
+
+#   - name: claim_amount_anomaly_check
+#     description: "Detects null, negative, zero, and unusually high claim amounts."
+#     columns:
+#       - name: check_status
+#         tests:
+#           - not_null
+#           - accepted_values:
+#               arguments:
+#                 values: ['PASS']
+
+version: 2
+
+models:
+  - name: claim_count_reconciliation
+    columns:
+      - name: check_status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['PASS']
+
+  - name: claim_amount_reconciliation
+    columns:
+      - name: check_status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['PASS']
+
+  - name: patient_reconciliation
+    columns:
+      - name: check_status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['PASS']
+
+  - name: provider_reconciliation
+    columns:
+      - name: check_status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['PASS']
+
+  - name: claims_freshness_monitoring
+    columns:
+      - name: check_status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['PASS']
+
+  - name: claim_amount_anomaly_check
+    columns:
+      - name: check_status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['PASS']
