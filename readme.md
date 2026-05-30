@@ -12,7 +12,7 @@ This project simulates a production-grade healthcare analytics environment using
 
 ## Architecture Diagram
 
-![Architecture Diagram](databricks\architecture-diagram.png)
+![Architecture Diagram](databricks/architecture-diagram.png)
 
 ---
 
